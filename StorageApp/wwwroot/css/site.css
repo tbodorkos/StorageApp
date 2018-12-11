@@ -1,0 +1,45 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: #F5F5F5;
+    color: #323232;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 0 9px 23px rgba(0,0,0,.09),0 5px 5px rgba(0,0,0,.06) !important;
+    -moz-box-shadow: 0 9px 23px rgba(0,0,0,.09),0 5px 5px rgba(0,0,0,.06) !important;
+    box-shadow: 0 9px 23px rgba(0,0,0,.09),0 5px 5px rgba(0,0,0,.06) !important;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.row {
+    margin-top: 1rem;
+}
+
+.btn-margin {
+    margin: 1rem;
+}
+
+.float-right {
+    float: right;
+}
+
+th {
+    text-align: center;
+}
+
+.alert {
+    margin: 0.5rem;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+}

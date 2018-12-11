@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Core.Entities.Component>
+
+@{
+    ViewData["Title"] = "Termékek kezelése";
+    var eurExchangeRate = await MNBService.GetCurrentExchangeRate("EUR");
+}
+
+<h2>Termékek kezelése</h2>
+
+<div class="row bg-white box-shadow">
+    <button class="btn btn-primary btn-margin" data-toggle="collapse" data-target="#create">Új termék hozzáadása</button>
+    <div id="create" class="collapse">
+        <form asp-controller="Component" asp-action="Create" method="post">
+            <div class="col-lg-12">
+                <h3>Új termék hozzáadása</h3>
+                <hr />
+                <div class="col-lg-6 form-group">
+                    @Html.Label("Name", "Termék neve:")
+                    @Html.TextBox("Name", "", new { @class = "form-control" })
+                </div>
+                <div class="col-lg-6 form-group">
+                    @Html.Label("Name", "Termék ára (HUF):")
+                    @Html.TextBox("Price", "", new { @class = "form-control" })
+                </div>
+                <div class="col-lg-6 form-group">
+                    @Html.Label("Name", "Termék leírása:")
+                    @Html.TextBox("Description", "", new { @class = "form-control" })
+                </div>
+                <div class="col-lg-6 form-group">
+                    @Html.Label("Name", "Termék tömege (kg):")
+                    @Html.TextBox("Weight", "", new { @class = "form-control" })
+                </div>
+                <div class="col-lg-6 col-lg-offset-6">
+                    <button type="submit" class="btn btn-success btn-margin float-right" style="margin-right: 0">Hozzáadás</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 box-shadow bg-white">
+        <h3>Termékek listája</h3>
+        <hr />
+        <div class="col-lg-12 overflow-x-auto">
+            @if (Model != null && Model.Count() > 0)
+            {
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>Termék neve</th>
+                        <th>Termék ára (HUF)</th>
+                        <th>Termék ára (EUR)</th>
+                        <th>Termék leírása</th>
+                        <th>Termék tömege (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var entity in Model)
+                    {
+                        <tr>
+                            <td>@entity.Name</td>
+                            <td>@entity.Price.ToString("N0", new CultureInfo("hu-HU"))</td>
+                            <td>@(decimal.Round(entity.Price / eurExchangeRate, 2).ToString("N", new CultureInfo("hu-HU")))</td>
+                            <td>@entity.Description</td>
+                            <td>@entity.Weight</td>
+                            <td>
+                                <form asp-controller="Component" asp-action="Edit" asp-route-id="@entity.Id" method="get">
+                                    <button type="submit" class="btn btn-primary">Módosítás</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form asp-controller="Component" asp-action="Delete" asp-route-id="@entity.Id" method="post">
+                                    <button type="submit" class="btn btn-danger">Törlés</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
+            else
+            {
+                <h4>Jelenleg nincs elérhető termék.</h4>
+            }
+        </div>
+    </div>
+</div>

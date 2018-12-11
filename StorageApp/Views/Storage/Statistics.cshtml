@@ -1,0 +1,43 @@
+﻿@model StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statisztikák";
+    var eurExchangeRate = await MNBService.GetCurrentExchangeRate("EUR");
+}
+
+<h2>Statisztikák</h2>
+<div class="row">
+    <div class="col-md-12 bg-white box-shadow">
+        <h3>Elérhető statisztikák</h3>
+        <hr />
+        <div class="col-lg-12 overflow-x-auto">
+            @if (Model != null)
+            {
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th>Raktár összértéke (HUF)</th>
+                            <th>Raktár összértéke (EUR)</th>
+                            <th>Raktár össztömege (kg)</th>
+                            <th>Legtöbb tételű termék</th>
+                            <th>Legnagyobb tömegű termék</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.StorageValue.ToString("N0", new CultureInfo("hu-HU"))</td>
+                            <td>@(decimal.Round(Model.StorageValue / eurExchangeRate, 2).ToString("N", new CultureInfo("hu-HU")))</td>
+                            <td>@Model.StorageWeight.ToString("N0", new CultureInfo("hu-HU"))</td>
+                            <td>@Model.PieceComponent.Name</td>
+                            <td>@Model.WeightComponent.Name</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h4>Jelenleg nincs elérhető statisztika.</h4>
+            }
+        </div>
+    </div>
+</div>

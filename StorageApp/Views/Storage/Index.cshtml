@@ -1,0 +1,81 @@
+﻿@model StorageViewModel
+
+@{
+    ViewData["Title"] = "Készlet kezelése";
+}
+
+<h2>Készlet kezelése</h2>
+
+@if (Model.Components != null && Model.Components.Count() > 0)
+{
+    <div class="row bg-white box-shadow">
+        @if (Model.Errors != null && Model.Errors.Count() > 0)
+        {
+            foreach (var error in Model.Errors)
+            {
+                <div class="alert alert-danger"><strong>Hiba!</strong> @error</div>
+            }
+        }
+        <button id="removeButton" class="btn btn-primary btn-margin" data-toggle="collapse" data-target="#modify" onclick="changeEvent(false)">Kivétel</button>
+        <button id="addButton" class="btn btn-primary btn-margin" data-toggle="collapse" data-target="#modify" onclick="changeEvent(true)">Bevétel</button>
+        <div id="modify" class="collapse">
+            <form asp-controller="Storage" asp-action="AddOrRemove" method="post">
+                <div class="col-lg-12">
+                    <h3 id="modifyTitle"></h3>
+                    <hr />
+                    @Html.HiddenFor(m => m.IsAdd)
+                    <div class="col-lg-6 form-group">
+                        <label asp-for="ComponentId">Termék:</label>
+                        <select asp-for="ComponentId" asp-items="@(new SelectList(Model.Components, "Id", "Name"))" class="form-control">
+                            <option>Válasszon ki egy terméket ...</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <label asp-for="Piece">Darab:</label>
+                        <input asp-for="Piece" class="form-control" min="1" value="1" />
+                        <span asp-validation-for="Piece" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-6 col-lg-offset-6">
+                        <button id="modifyButton" type="submit" class="btn btn-success btn-margin float-right" style="margin-right:0">Módosítás</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12 bg-white box-shadow">
+        <h3>Készleten lévő termékek listája</h3>
+        <hr />
+        <div class="col-lg-12">
+            @if (Model.Items != null && Model.Items.Count() > 0)
+            {
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th>Alkatrész neve</th>
+                            <th>Darabszám</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entity in Model.Items)
+                        {
+                            if (!entity.IsDeleted && entity.Piece > 0)
+                            {
+                                <tr>
+                                    <td>@entity.Component.Name</td>
+                                    <td>@entity.Piece.ToString("N0", new CultureInfo("hu-HU"))</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h4>Jelenleg nincs a készleten termék.</h4>
+            }
+        </div>
+    </div>
+</div>

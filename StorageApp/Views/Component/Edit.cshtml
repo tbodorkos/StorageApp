@@ -1,0 +1,22 @@
+﻿@model Core.Entities.Component
+
+@{
+    ViewData["Title"] = @Model.Name + " szerkesztése";
+}
+
+<h2>Termék szerkesztése</h2>
+<div class="row">
+    <div class="col-lg-12 bg-white box-shadow">
+        <h3><i>@Model.Name</i> nevű termék szerkesztése</h3>
+        <hr />
+        <div class="col-lg-12">
+            <form asp-action="Edit" method="post">
+                <input asp-for="@Model.Name" class="form-control" /><br />
+                <input asp-for="@Model.Price" class="form-control" /><br />
+                <input asp-for="@Model.Description" class="form-control" /><br />
+                <input asp-for="@Model.Weight" class="form-control" /><br />
+                <button type="submit" class="btn btn-success btn-margin float-right" style="margin-right:0">Mentés</button>
+            </form>
+        </div>
+    </div>
+</div>
